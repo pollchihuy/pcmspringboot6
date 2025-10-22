@@ -2,7 +2,9 @@ package com.juaracoding.controller;
 
 import com.juaracoding.coretan.Coba;
 import com.juaracoding.coretan.Pelanggan;
+import com.juaracoding.service.BPService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +15,12 @@ import java.util.Random;
 
 @RestController
 public class HelloController {
+
+    @Autowired
+    BPService bpService;
+
+    @Value("${ayam.goreng}")
+    private String makanan;
 
     @Autowired
     Coba coba;
@@ -155,5 +163,11 @@ public class HelloController {
             m.put("file"+(i+1),file[i].getOriginalFilename());
         }
         return m;
+    }
+
+    @GetMapping("asink")
+    public String testAsync(){
+        bpService.asyncTest();
+        return "OK";
     }
 }

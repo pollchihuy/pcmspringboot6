@@ -1,5 +1,6 @@
 package com.juaracoding.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
@@ -7,4 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:smtpconfig.properties")
 public class SMTPConfig {
 
+    @Value("${email.username}")
+    private String emailUsername;
 }

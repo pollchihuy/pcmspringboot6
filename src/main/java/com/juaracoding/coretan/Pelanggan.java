@@ -1,8 +1,10 @@
 package com.juaracoding.coretan;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class Pelanggan {
+
     private String cabang;
     @JsonProperty("kode_pos")
     private String kodepos;
@@ -12,7 +14,6 @@ public class Pelanggan {
     public String getCabang() {
         return cabang;
     }
-
     public void setCabang(String cabang) {
         this.cabang = cabang;
     }

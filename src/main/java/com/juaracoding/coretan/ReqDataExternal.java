@@ -1,20 +1,19 @@
 package com.juaracoding.coretan;
 
-/*
-IntelliJ IDEA 2024.1.4 (Ultimate Edition)
-Build #IU-241.18034.62, built on June 21, 2024
-@Author pollc a.k.a. Paul Christian
-Java Developer
-Created on 23/10/2025 19:32
-@Last Modified 23/10/2025 19:32
-Version 1.0
-*/
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Pattern;
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class ReqDataExternal {
 
     private Long id;
+    @Pattern(regexp = "^[a-z\\s]{6,15}$")
     private String nama;
+    @Pattern(regexp = "^[a-zA-Z0-9\\s\\/.]{5,255}$")
     private String alamat;
-    private String email;
+    private String email;//RFC_5322
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String tanggalLahir;
 
     public Long getId() {

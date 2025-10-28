@@ -22,14 +22,13 @@ public class ResponseHandler {
 
         Map<String,Object> m = new HashMap<>();
         m.put("message",message);
-//        m.put("status",status.value());
+        m.put("status",status.value());
         m.put("data",data==null?"":data);
         m.put("timestamp", Instant.now().toString());
         m.put("success",!status.isError());
         if(errorCode!=null){
             m.put("error_code",errorCode);
             m.put("path",request.getRequestURI());
-//            m.put("path",request.getPathInfo());
         }
         return new ResponseEntity<>(m,status);
     }

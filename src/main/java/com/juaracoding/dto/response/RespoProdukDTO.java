@@ -4,7 +4,7 @@ public class RespoProdukDTO {
 
     private Long id;
     private String namaProduk;
-    private Long idKatProd;
+//    private Long idKatProd;
     private String namaKategoriProduk;
 
     public Long getId() {
@@ -23,13 +23,13 @@ public class RespoProdukDTO {
         this.namaProduk = namaProduk;
     }
 
-    public Long getIdKatProd() {
-        return idKatProd;
-    }
-
-    public void setIdKatProd(Long idKatProd) {
-        this.idKatProd = idKatProd;
-    }
+//    public Long getIdKatProd() {
+//        return idKatProd;
+//    }
+//
+//    public void setIdKatProd(Long idKatProd) {
+//        this.idKatProd = idKatProd;
+//    }
 
     public String getNamaKategoriProduk() {
         return namaKategoriProduk;

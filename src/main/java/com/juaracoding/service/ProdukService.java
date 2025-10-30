@@ -4,6 +4,7 @@ import com.juaracoding.core.IReport;
 import com.juaracoding.core.IService;
 import com.juaracoding.dto.RelationDTO;
 import com.juaracoding.dto.response.RespoProdukDTO;
+import com.juaracoding.dto.response.RespoProdukFullDTO;
 import com.juaracoding.dto.validation.ValProdukDTO;
 import com.juaracoding.handler.ResponseHandler;
 import com.juaracoding.model.KategoriProduk;
@@ -13,6 +14,8 @@ import com.juaracoding.repo.ProdukRepo;
 import com.juaracoding.util.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +42,8 @@ public class ProdukService implements IService<Produk>, IReport<Produk> {
 
     @Autowired
     private TransformPagination tp;
+
+    private ModelMapper modelMapper = new ModelMapper();
 
     private static final String className = "ProdukService";
 
@@ -137,7 +142,8 @@ public class ProdukService implements IService<Produk>, IReport<Produk> {
     @Override
     public ResponseEntity<Object> findAll(Pageable pageable, HttpServletRequest request) {
         Page<Produk> page=null;
-        List<RespoProdukDTO> listDTO = null;
+//        List<RespoProdukDTO> listDTO = null;
+        List<RespoProdukFullDTO> listDTO = null;
         Page<RespoProdukDTO> pageRespo=null;
         Map<String,Object> data = null;
         try {
@@ -146,7 +152,7 @@ public class ProdukService implements IService<Produk>, IReport<Produk> {
                 return new ResponseHandler().handleResponse("Data Tidak Ditemukan",
                         HttpStatus.NOT_FOUND,null,"SLS03FV041",request);
             }
-            listDTO = entityToDTO(page.getContent());//List<Produk> -> List<RespoProduk>
+            listDTO = mapToDTO(page.getContent());//List<Produk> -> List<RespoProduk>
             data = tp.transformPagination(listDTO,page,"id","");
         }catch (Exception e){
             LoggingFile.logException(className,"findAll(Pageable pageable, HttpServletRequest request) "+ RequestCapture.allRequest(request),e);
@@ -155,8 +161,31 @@ public class ProdukService implements IService<Produk>, IReport<Produk> {
         }
 
         return new ResponseHandler().handleResponse("Data Ditemukan",
-                HttpStatus.OK,data,null,request);
+                HttpStatus.OK,listDTO,null,request);
     }
+
+//    public ResponseEntity<Object> findAll(Pageable pageable, HttpServletRequest request) {
+//        Page<Produk> page=null;
+//        List<RespoProdukDTO> listDTO = null;
+//        Page<RespoProdukDTO> pageRespo=null;
+//        Map<String,Object> data = null;
+//        try {
+//            page = produkRepo.findAll(pageable);
+//            if(page.isEmpty()){
+//                return new ResponseHandler().handleResponse("Data Tidak Ditemukan",
+//                        HttpStatus.NOT_FOUND,null,"SLS03FV041",request);
+//            }
+//            listDTO = entityToDTO(page.getContent());//List<Produk> -> List<RespoProduk>
+//            data = tp.transformPagination(listDTO,page,"id","");
+//        }catch (Exception e){
+//            LoggingFile.logException(className,"findAll(Pageable pageable, HttpServletRequest request) "+ RequestCapture.allRequest(request),e);
+//            return new ResponseHandler().handleResponse("Internal Server Error",
+//                    HttpStatus.INTERNAL_SERVER_ERROR,null,"SLS03FE041",request);
+//        }
+//
+//        return new ResponseHandler().handleResponse("Data Ditemukan",
+//                HttpStatus.OK,data,null,request);
+//    }
 
     @Override
     public ResponseEntity<Object> findByParam(Pageable pageable, String column, String value, HttpServletRequest request) {
@@ -271,5 +300,9 @@ public class ProdukService implements IService<Produk>, IReport<Produk> {
             l.add(r);
         }
         return l;
+    }
+
+    private List<RespoProdukFullDTO> mapToDTO(List<Produk> l){
+        return modelMapper.map(l,new TypeToken<List<RespoProdukFullDTO>>(){}.getType());
     }
 }

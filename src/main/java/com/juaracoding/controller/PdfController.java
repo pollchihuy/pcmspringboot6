@@ -50,6 +50,7 @@ public class PdfController {
             headers.setContentDispositionFormData("filename", "invoice.pdf");
 
             headers.setContentLength(pdfBytes.length);
+            headers.set("Paul","Paul Value");
 
             // --- 4. Kembalikan PDF sebagai ResponseEntity ---
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);

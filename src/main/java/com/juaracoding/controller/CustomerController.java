@@ -1,8 +1,8 @@
 package com.juaracoding.controller;
 
 import com.juaracoding.config.OtherConfig;
-import com.juaracoding.dto.validation.ValKategoriProdukDTO;
-import com.juaracoding.service.KategoriProdukService;
+import com.juaracoding.dto.validation.ValCustomerDTO;
+import com.juaracoding.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -15,35 +15,35 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("kategoriproduk")
-public class KategoriProdukController {
+@RequestMapping("customer")
+public class CustomerController {
 
     @Autowired
-    private KategoriProdukService kategoriprodukService;
+    private CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<Object> save(@Valid @RequestBody ValKategoriProdukDTO valProdukDTO, HttpServletRequest request){
-        return kategoriprodukService.save(kategoriprodukService.mapDtoToEntity(valProdukDTO),request);
+    public ResponseEntity<Object> save(@Valid @RequestBody ValCustomerDTO valCustomerDTO, HttpServletRequest request){
+        return customerService.save(customerService.mapDtoToEntity(valCustomerDTO),request);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id,@Valid@RequestBody ValKategoriProdukDTO valProdukDTO, HttpServletRequest request){
-        return kategoriprodukService.update(id,kategoriprodukService.mapDtoToEntity(valProdukDTO),request);
+    public ResponseEntity<Object> update(@PathVariable Long id,@Valid@RequestBody ValCustomerDTO valCustomerDTO, HttpServletRequest request){
+        return customerService.update(id,customerService.mapDtoToEntity(valCustomerDTO),request);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id, HttpServletRequest request){
-        return kategoriprodukService.delete(id,request);
+        return customerService.delete(id,request);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable Long id, HttpServletRequest request){
-        return kategoriprodukService.findById(id,request);
+        return customerService.findById(id,request);
     }
 
     @GetMapping
     public ResponseEntity<Object> findAll(HttpServletRequest request){
         Pageable pageable = PageRequest.of(0, OtherConfig.getDefaultPaginationSize(), Sort.by("id"));//asc dan desc
-        return kategoriprodukService.findAll(pageable,request);
+        return customerService.findAll(pageable,request);
     }
 
     @GetMapping("/{sort}/{sort_by}/{page}")
@@ -62,19 +62,25 @@ public class KategoriProdukController {
         }else {
             pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
         }
-        return kategoriprodukService.findByParam(pageable,column,value,request);
+        return customerService.findByParam(pageable,column,value,request);
     }
 
     @PostMapping("/upload")
     public ResponseEntity<Object> uploadExcel(
             @RequestParam MultipartFile file,
             HttpServletRequest request){
-        return kategoriprodukService.uploadDataExcel(file,request);
+        return customerService.uploadDataExcel(file,request);
     }
 
     private String sortByColumn(String sortBy){
         switch (sortBy){
             case "nama":sortBy="nama";break;
+            case "alamat":sortBy="alamat";break;
+            case "email":sortBy="email";break;
+            case "kodePos":sortBy="kodePos";break;
+            case "tanggalLahir":sortBy="tanggalLahir";break;
+            case "saldo":sortBy="saldo";break;
+            case "umur":sortBy="umur";break;
             default:sortBy="id";break;
         }
         return sortBy;
@@ -85,13 +91,13 @@ public class KategoriProdukController {
                               @RequestParam String value,
                               HttpServletRequest request,
                               HttpServletResponse response){
-        kategoriprodukService.downloadReportExcel(column,value,request,response);
+        customerService.downloadReportExcel(column,value,request,response);
     }
     @GetMapping("/download-pdf")
     public void downloadPDF(@RequestParam String column,
                               @RequestParam String value,
                               HttpServletRequest request,
                               HttpServletResponse response){
-        kategoriprodukService.downloadReportPDF(column,value,request,response);
+        customerService.downloadReportPDF(column,value,request,response);
     }
 }

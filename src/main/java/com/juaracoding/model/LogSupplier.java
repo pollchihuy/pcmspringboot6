@@ -5,33 +5,45 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-
-/**
- * platform code : SLS
- * modul code : 01
- */
 @Entity
-@Table(name = "MstKategori")
-public class KategoriProduk {
+@Table(name = "LogSupplier")
+public class LogSupplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    @Column(name = "Nama",length = 60,nullable = false,unique = true)
-    private String nama;
 
+    @Column(name = "IDSupplier",nullable = false)
+    private Long idSupplier;
+
+    @Column(name = "Nama",length = 50)
+    private String nama;
     @Column(name = "CreatedBy",nullable = false,updatable = false)
     private Long createdBy=1L;
     @Column(name = "CreatedDate",nullable = false,updatable = false)
     @CreationTimestamp
     private LocalDateTime createdDate;
-    @Column(name = "ModifiedBy",insertable = false)
-    private Long modifiedBy=1L;
-    @Column(name = "ModifiedDate",insertable = false)
-    @UpdateTimestamp
-    private LocalDateTime modifiedDate;
+    @Column(name = "Activity",nullable = false,updatable = false)
+    private Character flag;
+
+    public Long getIdSupplier() {
+        return idSupplier;
+    }
+
+    public void setIdSupplier(Long idSupplier) {
+        this.idSupplier = idSupplier;
+    }
+
+    public Character getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Character flag) {
+        this.flag = flag;
+    }
 
     public Long getId() {
         return id;
@@ -63,21 +75,5 @@ public class KategoriProduk {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
-    }
-
-    public Long getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(Long modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
     }
 }

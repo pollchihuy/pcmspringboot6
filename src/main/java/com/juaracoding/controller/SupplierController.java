@@ -1,8 +1,8 @@
 package com.juaracoding.controller;
 
 import com.juaracoding.config.OtherConfig;
-import com.juaracoding.dto.validation.ValKategoriProdukDTO;
-import com.juaracoding.service.KategoriProdukService;
+import com.juaracoding.dto.validation.ValSupplierDTO;
+import com.juaracoding.service.SupplierService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -15,35 +15,35 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("kategoriproduk")
-public class KategoriProdukController {
+@RequestMapping("supplier")
+public class SupplierController {
 
     @Autowired
-    private KategoriProdukService kategoriprodukService;
+    private SupplierService supplierService;
 
     @PostMapping
-    public ResponseEntity<Object> save(@Valid @RequestBody ValKategoriProdukDTO valProdukDTO, HttpServletRequest request){
-        return kategoriprodukService.save(kategoriprodukService.mapDtoToEntity(valProdukDTO),request);
+    public ResponseEntity<Object> save(@Valid @RequestBody ValSupplierDTO valSupplierDTO, HttpServletRequest request){
+        return supplierService.save(supplierService.mapDtoToEntity(valSupplierDTO),request);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id,@Valid@RequestBody ValKategoriProdukDTO valProdukDTO, HttpServletRequest request){
-        return kategoriprodukService.update(id,kategoriprodukService.mapDtoToEntity(valProdukDTO),request);
+    public ResponseEntity<Object> update(@PathVariable Long id,@Valid@RequestBody ValSupplierDTO valSupplierDTO, HttpServletRequest request){
+        return supplierService.update(id,supplierService.mapDtoToEntity(valSupplierDTO),request);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id, HttpServletRequest request){
-        return kategoriprodukService.delete(id,request);
+        return supplierService.delete(id,request);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable Long id, HttpServletRequest request){
-        return kategoriprodukService.findById(id,request);
+        return supplierService.findById(id,request);
     }
 
     @GetMapping
     public ResponseEntity<Object> findAll(HttpServletRequest request){
         Pageable pageable = PageRequest.of(0, OtherConfig.getDefaultPaginationSize(), Sort.by("id"));//asc dan desc
-        return kategoriprodukService.findAll(pageable,request);
+        return supplierService.findAll(pageable,request);
     }
 
     @GetMapping("/{sort}/{sort_by}/{page}")
@@ -62,14 +62,14 @@ public class KategoriProdukController {
         }else {
             pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
         }
-        return kategoriprodukService.findByParam(pageable,column,value,request);
+        return supplierService.findByParam(pageable,column,value,request);
     }
 
     @PostMapping("/upload")
     public ResponseEntity<Object> uploadExcel(
             @RequestParam MultipartFile file,
             HttpServletRequest request){
-        return kategoriprodukService.uploadDataExcel(file,request);
+        return supplierService.uploadDataExcel(file,request);
     }
 
     private String sortByColumn(String sortBy){
@@ -85,13 +85,13 @@ public class KategoriProdukController {
                               @RequestParam String value,
                               HttpServletRequest request,
                               HttpServletResponse response){
-        kategoriprodukService.downloadReportExcel(column,value,request,response);
+        supplierService.downloadReportExcel(column,value,request,response);
     }
     @GetMapping("/download-pdf")
     public void downloadPDF(@RequestParam String column,
                               @RequestParam String value,
                               HttpServletRequest request,
                               HttpServletResponse response){
-        kategoriprodukService.downloadReportPDF(column,value,request,response);
+        supplierService.downloadReportPDF(column,value,request,response);
     }
 }

@@ -58,9 +58,8 @@ public class CreateData extends AbstractTestNGSpringContextTests {
         Response response ;
         try{
             List<GroupMenu> groupMenus = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 1000; i++) {
                 GroupMenu gMenuAdd = new GroupMenu();
-
                 gMenuAdd.setCreatedBy(1L);
                 gMenuAdd.setDeskripsi(genDataDescription());
                 gMenuAdd.setNama(dataGenerator.dataNamaTim());
